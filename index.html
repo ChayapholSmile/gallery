@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แกลลอรีรูปภาพ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
     <style>
         @font-face {
-            font-family: 'Thonburi';
-            src: url('path_to_thonburi.ttf') format('truetype');
+            font-family: 'Noto Sans Thai';
         }
 
         body {
-            font-family: 'Thonburi', sans-serif;
+            font-family: 'Noto Sans Thai', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f0f0f0;
@@ -62,20 +64,36 @@
             animation: fadeIn 0.5s ease-in-out;
             display: flex;
             width: 80%;
-            max-width: 800px;
+            max-width: 1000px;
+            height: 80%;
         }
 
-        /* คอลัมน์ */
-        .popup .column {
+        /* ฝั่งซ้ายและขวาของป๊อปอัพ */
+        .popup .left, .popup .right {
             flex: 1;
             padding: 10px;
         }
 
-        /* ภาพที่ซูม */
-        .popup .column img {
+        /* ฝั่งซ้าย - แสดงภาพ */
+        .popup .left img {
             width: 100%;
             height: auto;
             border-radius: 10px;
+        }
+
+        /* ฝั่งขว - แสดงข้อมูล */
+        .popup .right {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ข้อมูลในฝั่งขวา */
+        .popup .right h2 {
+            margin-top: 0;
+        }
+
+        .popup .right p {
+            margin: 5px 0;
         }
 
         /* ปุ่มปิด */
@@ -108,7 +126,7 @@
     </div>
     <div class="gallery" id="gallery"></div>
     <div class="footer">
-        <p>© 2024 แกลลอรีของคุณ</p>
+        <p>© 2024 Chayaphol Roibang</p>
     </div>
 
     <script>
@@ -148,31 +166,31 @@
             const popup = document.createElement('div');
             popup.classList.add('popup');
 
-            // คอลัมน์ 1: ภาพขยาย
-            const imgColumn = document.createElement('div');
-            imgColumn.classList.add('column');
+            // ฝั่งซ้าย: ภาพ
+            const leftColumn = document.createElement('div');
+            leftColumn.classList.add('left');
             const imgElement = document.createElement('img');
             imgElement.src = imgUrl;
             imgElement.alt = title;
-            imgColumn.appendChild(imgElement);
+            leftColumn.appendChild(imgElement);
 
-            // คอลัมน์ 2: ข้อมูลรายละเอียด
-            const infoColumn = document.createElement('div');
-            infoColumn.classList.add('column');
+            // ฝั่งขวา: ข้อมูล
+            const rightColumn = document.createElement('div');
+            rightColumn.classList.add('right');
 
             const titleElement = document.createElement('h2');
             titleElement.innerText = title;
-            infoColumn.appendChild(titleElement);
+            rightColumn.appendChild(titleElement);
 
             const descriptionElement = document.createElement('p');
             descriptionElement.innerText = description;
-            infoColumn.appendChild(descriptionElement);
+            rightColumn.appendChild(descriptionElement);
 
             const mapDiv = document.createElement('div');
             mapDiv.id = 'map';
             mapDiv.style.width = '100%';
-            mapDiv.style.height = '200px';
-            infoColumn.appendChild(mapDiv);
+            mapDiv.style.height = '300px';
+            rightColumn.appendChild(mapDiv);
 
             const closeBtn = document.createElement('button');
             closeBtn.classList.add('close-btn');
@@ -180,15 +198,15 @@
             closeBtn.addEventListener('click', () => {
                 document.body.removeChild(popup);
             });
-            infoColumn.appendChild(closeBtn);
+            rightColumn.appendChild(closeBtn);
 
             // เพิ่มคอลัมน์ในป๊อปอัพ
-            popup.appendChild(imgColumn);
-            popup.appendChild(infoColumn);
+            popup.appendChild(leftColumn);
+            popup.appendChild(rightColumn);
 
             document.body.appendChild(popup);
             initMap(latitude, longitude);
-            popup.style.display = 'block';
+            popup.style.display = 'flex'; // ใช้ flex display แทนการแสดงแบบ block
         }
 
         function initMap(latitude, longitude) {
@@ -203,7 +221,6 @@
         }
 
         window.addEventListener('DOMContentLoaded', fetchData);
-
     </script>
 
     <script async
